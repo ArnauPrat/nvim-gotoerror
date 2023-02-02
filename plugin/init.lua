@@ -83,7 +83,22 @@ local jump_to_error = function()
   -- log("jump")
   local buffer_handle = vim.api.nvim_get_current_buf()
   local current_line = vim.api.nvim_get_current_line()
-  for path, line in current_line:gmatch(gotoerror.regex) do
+  for path, cursor in current_line:gmatch(gotoerror.regex) do
+
+    -- Parsing line and column
+    local line = 0
+    local column = 0
+    if string.find(cursor,",") 
+      then
+        for first, second in string.gmatch(cursor, "([0-9]+),([0-9]+)") do
+          line = first
+          column = second
+        end
+      else
+        line = cursor
+      end
+
+    -- Searching for tab/buffer
     buffer_handle = find_nvim_buffer(path)
     if buffer_handle == nil then
       -- buffer handle not found. Open in new tab
@@ -100,8 +115,8 @@ local jump_to_error = function()
           -- opened 
           vim.api.nvim_set_current_tabpage(tab)
           vim.api.nvim_set_current_win(win)
-          vim.api.nvim_command(':' .. line)
         end
+        vim.api.nvim_command(':call cursor(' .. line .. ',' .. column ..')')
       end
       -- Interested in the first match, so break
       break
@@ -138,7 +153,7 @@ local exec_command = function(data)
 -- Global object
   gotoerror = {
     command     = exec_command,
-    regex       = "([a-zA-Z:]+:[a-zA-Z0-9:\\._\\-]+)[(]([0-9]+)[)]",
+    regex       = "([a-zA-Z:]+:[a-zA-Z0-9:\\._\\-]+)[(]([0-9,]+)[)]",
   }
 
 -- Registering commands
