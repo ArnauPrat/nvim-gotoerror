@@ -1,4 +1,6 @@
 -- Author: Arnau Prat <arnau.prat@gmail.com>
+-- 
+--
 -- Nvim plugin to jump to compiler error locations. The plugin searches for
 -- error lines in the current buffer (presumably, containing the output of a
 -- compiler) and let's the user to jump to the location (file ana line) with the
