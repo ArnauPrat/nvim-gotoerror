@@ -64,7 +64,7 @@ local next_error_msg = function()
   local buffer_handle = vim.api.nvim_get_current_buf()
   local result = -1
   vim.api.nvim_buf_call(buffer_handle, function() 
-    result = vim.fn.search('error')
+    result = vim.fn.search('error:')
   end)
 end
 
@@ -74,7 +74,7 @@ local previous_error_msg = function()
   local buffer_handle = vim.api.nvim_get_current_buf()
   local result = -1
   vim.api.nvim_buf_call(buffer_handle, function() 
-    result = vim.fn.search('error', 'b')
+    result = vim.fn.search('error:', 'b')
   end)
 end
 
