@@ -66,7 +66,7 @@ local next_error_msg = function()
   local buffer_handle = vim.api.nvim_get_current_buf()
   local result = -1
   vim.api.nvim_buf_call(buffer_handle, function() 
-    result = vim.fn.search('error:')
+    result = vim.fn.search(gotoerror.errorpattern)
   end)
 end
 
@@ -76,7 +76,7 @@ local previous_error_msg = function()
   local buffer_handle = vim.api.nvim_get_current_buf()
   local result = -1
   vim.api.nvim_buf_call(buffer_handle, function() 
-    result = vim.fn.search('error:', 'b')
+    result = vim.fn.search(gotoerror.errorpattern, 'b')
   end)
 end
 
@@ -156,6 +156,7 @@ local exec_command = function(data)
   gotoerror = {
     command     = exec_command,
     regex       = "([a-zA-Z:]+:[a-zA-Z0-9:\\._\\-]+)[(]([0-9,]+)[)]",
+    errorpattern    = ": error",
   }
 
 -- Registering commands
